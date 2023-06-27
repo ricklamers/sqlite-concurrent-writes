@@ -29,8 +29,7 @@ def write_log(start, end):
         log = Log(id=i, text=str(i))
         print(f"Writing log {i} to database from PID {pid}", flush=True)
         session.add(log)
-
-    session.commit()
+        session.commit()
 
 if __name__ == "__main__":
     import sys

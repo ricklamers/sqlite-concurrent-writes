@@ -14,4 +14,4 @@ def spawn_program(start, end):
         executor.map(run_program, range_values)
 
 if __name__ == "__main__":
-    spawn_program(1, 100)
+    spawn_program(1, 5000)
