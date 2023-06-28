@@ -23,9 +23,9 @@ lock = threading.Lock()
 class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
 
     def handle(self):
-        lock.acquire()
 
         session = Session()
+
         while True:
             # Receive the data in small chunks
             data = self.request.recv(4096)
@@ -42,16 +42,19 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
                 continue
 
             try:
+                lock.acquire()
                 session.add(entry)
                 session.commit()
+                session.flush()
                 self.request.sendall(b'OK')
             except (IntegrityError, OperationalError) as error:
                 print("ERROR:", error, type(error))
                 self.request.sendall(b'ERROR')
                 session.rollback()
+            finally:
+                lock.release()
 
         session.close()
-        lock.release()
 
 
 class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):

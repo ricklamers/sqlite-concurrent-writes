@@ -24,7 +24,7 @@ def main():
     """Entry point"""
     start = int(sys.argv[1])
     end = int(sys.argv[2])
-    verify_log(start, end)
+    print(verify_log(start, end))
 
 if __name__ == "__main__":
     main()
